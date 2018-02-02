@@ -109,8 +109,8 @@ public class Manager {
 				balance = result.getDouble("balance");
 			}
 		} catch (SQLException e) {
+			System.err.println("An error occurred while getting data from account.");
 			e.printStackTrace();
-			return 1;
 		}
 		return balance;
 	}
@@ -132,12 +132,12 @@ public class Manager {
 					prepStat.setDouble(1, curr_balance);
 					prepStat.execute();
 				} catch (SQLException e) {
+					System.err.println("An error occurred while updating an account balance.");
 					e.printStackTrace();
-					return 1;
 				}
 			} catch (SQLException e) {
+				System.err.println("An error occurred while getting data from account.");
 				e.printStackTrace();
-				return 1;
 			}
 			break;
 		case "deposit":
@@ -153,12 +153,12 @@ public class Manager {
 					prepStat.setDouble(1, curr_balance);
 					prepStat.execute();
 				} catch (SQLException e) {
+					System.err.println("An error occurred while updating an account balance.");
 					e.printStackTrace();
-					return 1;
 				}
 			} catch (SQLException e) {
+				System.err.println("An error occurred while getting data from account.");
 				e.printStackTrace();
-				return 1;
 			}
 			break;
 		}
@@ -204,5 +204,15 @@ public class Manager {
 			return null;
 		}
 		return accounts;
+	}
+
+	public void closeAccount(int accountID) {
+		try {
+			PreparedStatement prepStat = con.prepareStatement("DELETE FROM Account WHERE accountID = " + accountID);
+	        prepStat.executeUpdate(); 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 }

@@ -1,6 +1,7 @@
 package account.main;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 import account.management.*;
@@ -19,9 +20,9 @@ public class Menu {
 			System.out.println("\n\t2. CHECK ACCOUNT BALANCE");
 			System.out.println("\n\t3. CASH WITHDRAWAL");
 			System.out.println("\n\t4. CASH DEPOSIT");
-			System.out.println("\n\t5. ALL ACCOUNT HOLDER LIST");
-			System.out.println("\n\t6. CLOSE AN ACCOUNT");
-			System.out.println("\n\t7. MODIFY AN ACCOUNT");
+			System.out.println("\n\t5. ALL ACCOUNT AND HOLDER LIST");
+			System.out.println("\n\t6. MODIFY AN ACCOUNT");
+			System.out.println("\n\t7. CLOSE AN ACCOUNT");
 			System.out.println("\n\t8. EXIT");
 			System.out.print("\n\tPlease choose an option (1-8): ");
 			choice = s.nextInt();
@@ -84,10 +85,41 @@ public class Menu {
 				}
 				break;
 			case 5:
+				List<Account> accounts = mng.getAllAccounts();
+				List<Holder> holders = mng.getAllHolders();
+				
+				System.out.println("\nAccounts: ");
+				System.out.println("ID | HOLDER_ID | TYPE | BALANCE");
+		        for(Account a: accounts)
+		            System.out.println(a);
+		       
+		        System.out.print("\n");
+		        
+		        System.out.println("Holders:");
+		        System.out.println("ID | NAME | SURNAME | PESEL");
+		        for(Holder h: holders)
+		            System.out.println(h);
+		        
+		        System.out.print("\nPress ENTER to continue... ");
+				try {
+					System.in.read();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				break;
 			case 6:
 				break;
 			case 7:
+				System.out.print("\nEnter the account ID: ");
+				ID = s.nextInt();
+				mng.closeAccount(ID);
+				System.out.println("\nThis account has been closed.");
+				System.out.print("\nPress ENTER to continue... ");
+				try {
+					System.in.read();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				break;
 			case 8:
 				System.out.println("\n\tThanks for using account management system. Have a nice day! :)");
