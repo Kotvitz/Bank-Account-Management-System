@@ -10,8 +10,8 @@ public class Account {
 		return ID;
 	}
 	
-	public void setID(int id) {
-		this.ID = id;
+	public void setID(int ID) {
+		this.ID = ID;
 	}
 
 	public int getHolderID() {
@@ -34,13 +34,13 @@ public class Account {
 		return balance;
 	}
 
-	public void setBalance(float balance) {
+	public void setBalance(double balance) {
 		this.balance = balance;
 	}
 	
-	public Account(int id, int holderId, String type, double balance) {
-		this.ID = id;
-		this.holderID = holderId;
+	public Account(int ID, int holderID, String type, double balance) {
+		this.ID = ID;
+		this.holderID = holderID;
 		this.type = type;
 		this.balance = balance;
 	}

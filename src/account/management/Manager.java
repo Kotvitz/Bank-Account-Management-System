@@ -73,7 +73,7 @@ public class Manager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void createAccount(int holderID, String type, double balance) {
 		try {
 			PreparedStatement prepStat = con.prepareStatement("INSERT INTO Account VALUES (NULL, ?, ?, ?);");
@@ -86,7 +86,7 @@ public class Manager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void createAccountForSpecificPerson(String pesel, String type, double balance) {
 		try {
 			int holderId;
@@ -100,45 +100,109 @@ public class Manager {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public double getAccountBalance(int accountID) {
+		double balance = 0;
+		try {
+			ResultSet result = stat.executeQuery("SELECT balance FROM Account WHERE accountID = " + accountID);
+			while (result.next()) {
+				balance = result.getDouble("balance");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
+		return balance;
+	}
+
+	public double updateAccountBalance(int accountID, String operation, double amount) {
+		double balance = 0;
+		double curr_balance = 0;
+		switch (operation) {
+		case "withdraw":
+			try {
+				ResultSet result = stat.executeQuery("SELECT balance FROM Account WHERE accountID = " + accountID);
+				while (result.next()) {
+					balance = result.getDouble("balance");
+					curr_balance = balance - amount;
+				}
+				try {
+					PreparedStatement prepStat = con
+							.prepareStatement("UPDATE Account SET balance = ? WHERE accountID = " + accountID);
+					prepStat.setDouble(1, curr_balance);
+					prepStat.execute();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return 1;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return 1;
+			}
+			break;
+		case "deposit":
+			try {
+				ResultSet result = stat.executeQuery("SELECT balance FROM Account WHERE accountID = " + accountID);
+				while (result.next()) {
+					balance = result.getDouble("balance");
+					curr_balance = balance + amount;
+				}
+				try {
+					PreparedStatement prepStat = con
+							.prepareStatement("UPDATE Account SET balance = ? WHERE accountID = " + accountID);
+					prepStat.setDouble(1, curr_balance);
+					prepStat.execute();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return 1;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return 1;
+			}
+			break;
+		}
+		return curr_balance;
+	}
+
 	public List<Holder> getAllHolders() {
-        List<Holder> holders = new LinkedList<Holder>();
-        try {
-            ResultSet result = stat.executeQuery("SELECT * FROM Holder");
-            int id;
-            String name, surname, pesel;
-            while(result.next()) {
-                id = result.getInt("holderID");
-                name = result.getString("name");
-                surname = result.getString("surname");
-                pesel = result.getString("pesel");
-                holders.add(new Holder(id, name, surname, pesel));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return holders;
-    }
- 
-    public List<Account> getAllAccounts() {
-        List<Account> accounts = new LinkedList<Account>();
-        try {
-            ResultSet result = stat.executeQuery("SELECT * FROM Account");
-            int id, holderId;
-            String type;
-            double balance;
-            while(result.next()) {
-                id = result.getInt("accountID");
-                holderId = result.getInt("holderID");
-                type = result.getString("type");
-                balance = result.getDouble("balance");
-                accounts.add(new Account(id, holderId, type, balance));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return accounts;
-    }
+		List<Holder> holders = new LinkedList<Holder>();
+		try {
+			ResultSet result = stat.executeQuery("SELECT * FROM Holder");
+			int id;
+			String name, surname, pesel;
+			while (result.next()) {
+				id = result.getInt("holderID");
+				name = result.getString("name");
+				surname = result.getString("surname");
+				pesel = result.getString("pesel");
+				holders.add(new Holder(id, name, surname, pesel));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return holders;
+	}
+
+	public List<Account> getAllAccounts() {
+		List<Account> accounts = new LinkedList<Account>();
+		try {
+			ResultSet result = stat.executeQuery("SELECT * FROM Account");
+			int id, holderId;
+			String type;
+			double balance;
+			while (result.next()) {
+				id = result.getInt("accountID");
+				holderId = result.getInt("holderID");
+				type = result.getString("type");
+				balance = result.getDouble("balance");
+				accounts.add(new Account(id, holderId, type, balance));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return accounts;
+	}
 }

@@ -38,8 +38,8 @@ public class Holder {
 		this.pesel = pesel;
 	}
 
-	public Holder(int id, String name, String surname, String pesel) {
-		this.ID = id;
+	public Holder(int ID, String name, String surname, String pesel) {
+		this.ID = ID;
 		this.name = name;
 		this.surname = surname;
 		this.pesel = pesel;
