@@ -206,10 +206,24 @@ public class Manager {
 		return accounts;
 	}
 
+	public void modifyHolderData(int holderID, String newName, String newSurname, String newPesel) {
+		try {
+			PreparedStatement prepStat = con
+					.prepareStatement("UPDATE Holder SET name = ?, surname = ?, pesel = ? WHERE holderID = " + holderID);
+			prepStat.setString(1, newName);
+			prepStat.setString(2, newSurname);
+			prepStat.setString(3, newPesel);
+			prepStat.execute();
+		} catch (SQLException e) {
+			System.err.println("An error occurred while modifying an holder data.");
+			e.printStackTrace();
+		}
+	}
+
 	public void closeAccount(int accountID) {
 		try {
 			PreparedStatement prepStat = con.prepareStatement("DELETE FROM Account WHERE accountID = " + accountID);
-	        prepStat.executeUpdate(); 
+			prepStat.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

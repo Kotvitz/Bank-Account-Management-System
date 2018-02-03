@@ -12,6 +12,7 @@ public class Menu {
 		Manager mng = new Manager();
 		int choice, ID;
 		double amount;
+		String name, surname, pesel;
 		Scanner s = new Scanner(System.in);
 		Welcome.message();
 		do {
@@ -21,14 +22,14 @@ public class Menu {
 			System.out.println("\n\t3. CASH WITHDRAWAL");
 			System.out.println("\n\t4. CASH DEPOSIT");
 			System.out.println("\n\t5. ALL ACCOUNT AND HOLDER LIST");
-			System.out.println("\n\t6. MODIFY AN ACCOUNT");
+			System.out.println("\n\t6. MODIFY A HOLDER DATA");
 			System.out.println("\n\t7. CLOSE AN ACCOUNT");
 			System.out.println("\n\t8. EXIT");
 			System.out.print("\n\tPlease choose an option (1-8): ");
 			choice = s.nextInt();
 			switch (choice) {
 			case 1:
-				String name, surname, pesel, type;
+				String type;
 				double balance;
 				System.out.println("\nFirst enter the holder's details.");
 				System.out.print("\nNAME: ");
@@ -90,7 +91,7 @@ public class Menu {
 				
 				System.out.println("\nAccounts: ");
 				System.out.println("ID | HOLDER_ID | TYPE | BALANCE");
-		        for(Account a: accounts)
+				for(Account a: accounts)
 		            System.out.println(a);
 		       
 		        System.out.print("\n");
@@ -108,6 +109,16 @@ public class Menu {
 				}
 				break;
 			case 6:
+				System.out.print("\nEnter the holder ID: ");
+				ID = s.nextInt();
+				System.out.println("\nEnter new holder's details.");
+				System.out.print("\nNAME: ");
+				name = s.next();
+				System.out.print("\nSURNAME: ");
+				surname = s.next();
+				System.out.print("\nPESEL: ");
+				pesel = s.next();
+				mng.modifyHolderData(ID, name, surname, pesel);
 				break;
 			case 7:
 				System.out.print("\nEnter the account ID: ");
